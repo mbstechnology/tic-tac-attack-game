@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Tic Tac Attack</title>
     <style>
+      /* Todo o CSS permanece igual */
       :root {
         --primary-color: #007bff;
         --secondary-color: #66b3ff;
@@ -224,7 +225,6 @@
         text-shadow: 0 0 10px rgba(77, 148, 255, 0.7);
       }
 
-      /* modo ataque visual */
       .attack-mode-active {
         animation: pulse 1.5s infinite;
         box-shadow: 0 0 30px rgba(255, 80, 80, 0.25);
@@ -242,7 +242,6 @@
         }
       }
 
-      /* Efeitos de faíscas */
       .spark {
         position: absolute;
         width: 4px;
@@ -341,77 +340,59 @@
         box-shadow: 0 0 10px white;
       }
 
-      /* X colors */
       #x-color-1 {
         background: #ff4d4d;
       }
-
       #x-color-2 {
         background: #ffcc00;
       }
-
       #x-color-3 {
         background: #00cc66;
       }
-
       #x-color-4 {
         background: #ff9900;
       }
-
       #x-color-5 {
         background: #00ffff;
       }
-
       #x-color-6 {
         background: #ffffff;
       }
 
-      /* O colors */
       #o-color-1 {
         background: #4d94ff;
       }
-
       #o-color-2 {
         background: #cc66ff;
       }
-
       #o-color-3 {
         background: #ff66b3;
       }
-
       #o-color-4 {
         background: #00ff99;
       }
-
       #o-color-5 {
         background: #ff33cc;
       }
-
       #o-color-6 {
         background: #ffff00;
       }
 
-      /* board colors */
       #board-color-1 {
         background: #1e1e1e;
       }
-
       #board-color-2 {
         background: #2d2d2d;
       }
-
       #board-color-3 {
         background: #3d3d3d;
       }
-
       #board-color-4 {
         background: #000000;
       }
-
       #board-color-5 {
         background: #222244;
       }
-
       #board-color-6 {
         background: #444400;
       }
@@ -434,6 +415,12 @@
         animation: flash 1s infinite;
       }
 
+      .effect-message {
+        color: #00ff99;
+        font-weight: bold;
+        animation: glow 1s infinite;
+      }
+
       @keyframes flash {
         0%,
         100% {
@@ -441,6 +428,16 @@
         }
         50% {
           opacity: 0.5;
+        }
+      }
+
+      @keyframes glow {
+        0%,
+        100% {
+          text-shadow: 0 0 5px #00ff99;
+        }
+        50% {
+          text-shadow: 0 0 20px #00ff99, 0 0 30px #00ff99;
         }
       }
 
@@ -463,11 +460,9 @@
         h1 {
           font-size: 2.5rem;
         }
-
         .game-board {
           max-width: 300px;
         }
-
         .cell {
           font-size: 2.5rem;
         }
@@ -478,74 +473,67 @@
     <div class="container">
       <header>
         <h1>Tic Tac Attack</h1>
-        <div class="subtitle">Tic Tac Toe clássico com o modo Ataque!</div>
+        <div class="subtitle">Classic Tic Tac Toe with Attack Mode!</div>
       </header>
 
-      <!-- Menu Principal -->
       <div id="main-menu" class="screen">
         <div class="menu-buttons">
-          <button id="play-btn">Jogar</button>
-          <button id="settings-btn" class="secondary-btn">Configurações</button>
-          <button id="custom-btn" class="secondary-btn">Personalizar</button>
-          <button id="exit-btn" class="secondary-btn">Sair</button>
+          <button id="play-btn">Play</button>
+          <button id="settings-btn" class="secondary-btn">Settings</button>
+          <button id="custom-btn" class="secondary-btn">Customize</button>
+          <button id="exit-btn" class="secondary-btn">Exit</button>
         </div>
       </div>
 
-      <!-- Tela do Jogo -->
       <div id="game-screen" class="screen">
         <div class="game-info">
           <div class="player-info active" id="player-info">
-            <div>Jogador (X)</div>
-            <div id="player-moves">Jogadas: 0</div>
+            <div>Player (X)</div>
+            <div id="player-moves">Moves: 0</div>
           </div>
           <div class="player-info" id="computer-info">
-            <div>Computador (O)</div>
-            <div id="computer-moves">Jogadas: 0</div>
+            <div>Computer (O)</div>
+            <div id="computer-moves">Moves: 0</div>
           </div>
         </div>
 
-        <div class="game-board" id="game-board">
-          <!-- Células serão geradas pelo JavaScript -->
-        </div>
+        <div class="game-board" id="game-board"></div>
 
         <div class="message" id="game-message">
-          Sua vez! Clique em uma célula para colocar X
+          Your turn! Click on a cell to place X
         </div>
 
         <div class="menu-buttons">
-          <button id="restart-btn">Reiniciar</button>
-          <button id="menu-btn" class="secondary-btn">Menu Principal</button>
+          <button id="restart-btn">Restart</button>
+          <button id="menu-btn" class="secondary-btn">Main Menu</button>
         </div>
       </div>
 
-      <!-- Tela de Configurações -->
       <div id="settings-screen" class="screen">
-        <h2>Configurações</h2>
+        <h2>Settings</h2>
         <div class="settings-option">
-          <span>Som</span>
+          <span>Sound</span>
           <label class="toggle-switch">
             <input type="checkbox" id="sound-toggle" checked />
             <span class="slider"></span>
           </label>
         </div>
         <div class="settings-option">
-          <span>Tema Escuro</span>
+          <span>Dark Theme</span>
           <label class="toggle-switch">
             <input type="checkbox" id="theme-toggle" checked />
             <span class="slider"></span>
           </label>
         </div>
         <div class="menu-buttons">
-          <button id="settings-back-btn">Voltar</button>
+          <button id="settings-back-btn">Back</button>
         </div>
       </div>
 
-      <!-- Tela de Personalização -->
       <div id="custom-screen" class="screen">
-        <h2>Personalizar</h2>
-
+        <h2>Customize</h2>
         <div class="settings-option">
-          <span>Cor do X</span>
+          <span>X Color</span>
           <div class="color-picker">
             <div class="color-option selected" id="x-color-1"></div>
             <div class="color-option" id="x-color-2"></div>
@@ -555,9 +543,8 @@
             <div class="color-option" id="x-color-6"></div>
           </div>
         </div>
-
         <div class="settings-option">
-          <span>Cor do O</span>
+          <span>O Color</span>
           <div class="color-picker">
             <div class="color-option selected" id="o-color-1"></div>
             <div class="color-option" id="o-color-2"></div>
@@ -567,9 +554,8 @@
             <div class="color-option" id="o-color-6"></div>
           </div>
         </div>
-
         <div class="settings-option">
-          <span>Cor do Tabuleiro</span>
+          <span>Board Color</span>
           <div class="color-picker">
             <div class="color-option selected" id="board-color-1"></div>
             <div class="color-option" id="board-color-2"></div>
@@ -579,27 +565,23 @@
             <div class="color-option" id="board-color-6"></div>
           </div>
         </div>
-
         <div class="menu-buttons">
-          <button id="custom-back-btn">Voltar</button>
+          <button id="custom-back-btn">Back</button>
         </div>
       </div>
 
-      <!-- Tela de Anúncio -->
       <div id="ad-screen">
         <div id="ad-content">
-          <h2>Anúncio</h2>
-          <p>Obrigado por jogar! Este é um anúncio simulado.</p>
+          <h2>Advertisement</h2>
+          <p>Thank you for playing! This is a simulated ad.</p>
           <div id="ad-timer">5</div>
-          <p>O jogo continuará automaticamente...</p>
+          <p>The game will continue automatically...</p>
         </div>
       </div>
     </div>
 
     <script>
-      /* ===========================
-       Estado do jogo / configurações
-       =========================== */
+      // Game State
       let board = Array(9).fill("");
       let currentPlayer = "X";
       let gameActive = false;
@@ -608,100 +590,104 @@
       let playerAttackMode = false;
       let computerAttackMode = false;
       let matchesPlayed = 0;
-      let totalMoves = 0;
 
-      // guardam a primeira jogada de cada no 1º round (persistem até o modo ataque)
       let firstPlayerXIndex = -1;
       let firstComputerOIndex = -1;
-
-      // alternância de quem começa
       let playerStartsNext = true;
 
-      // Configurações
+      // Settings
       let soundEnabled = true;
       let darkTheme = true;
       let xColor = "#ff4d4d";
       let oColor = "#4d94ff";
       let boardColor = "#1e1e1e";
 
-      // Sons simplificados - sem áudio externo
+      // Sound System
+      const audioContext = new (window.AudioContext ||
+        window.webkitAudioContext)();
+
+      function playSound(frequency, duration, type = "sine") {
+        if (!soundEnabled) return;
+
+        try {
+          const oscillator = audioContext.createOscillator();
+          const gainNode = audioContext.createGain();
+
+          oscillator.connect(gainNode);
+          gainNode.connect(audioContext.destination);
+
+          oscillator.frequency.value = frequency;
+          oscillator.type = type;
+
+          gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+          gainNode.gain.exponentialRampToValueAtTime(
+            0.01,
+            audioContext.currentTime + duration
+          );
+
+          oscillator.start(audioContext.currentTime);
+          oscillator.stop(audioContext.currentTime + duration);
+        } catch (e) {
+          console.log("Audio error:", e);
+        }
+      }
+
       const sounds = {
-        click: { play: () => {} },
-        win: { play: () => {} },
-        lose: { play: () => {} },
-        draw: { play: () => {} },
-        attack: { play: () => {} },
+        click: () => playSound(800, 0.1),
+        place: () => playSound(600, 0.2),
+        win: () => playSound(523, 0.5),
+        lose: () => playSound(220, 0.5),
+        draw: () => playSound(440, 0.3),
+        attack: () => playSound(1200, 0.3, "square"),
+        spark: () => playSound(1500, 0.1, "sawtooth"),
+        error: () => playSound(300, 0.2, "square"),
+        powerup: () => {
+          playSound(800, 0.1);
+          setTimeout(() => playSound(1000, 0.1), 100);
+          setTimeout(() => playSound(1200, 0.1), 200);
+        },
       };
 
-      // Elementos DOM
-      const mainMenu = document.getElementById("main-menu");
-      const gameScreen = document.getElementById("game-screen");
-      const settingsScreen = document.getElementById("settings-screen");
-      const customScreen = document.getElementById("custom-screen");
-      const adScreen = document.getElementById("ad-screen");
-      const gameBoard = document.getElementById("game-board");
-      const gameMessage = document.getElementById("game-message");
-      const playerMovesDisplay = document.getElementById("player-moves");
-      const computerMovesDisplay = document.getElementById("computer-moves");
-      const playerInfo = document.getElementById("player-info");
-      const computerInfo = document.getElementById("computer-info");
-      const adTimer = document.getElementById("ad-timer");
+      // DOM Elements
+      const elements = {
+        mainMenu: document.getElementById("main-menu"),
+        gameScreen: document.getElementById("game-screen"),
+        settingsScreen: document.getElementById("settings-screen"),
+        customScreen: document.getElementById("custom-screen"),
+        adScreen: document.getElementById("ad-screen"),
+        gameBoard: document.getElementById("game-board"),
+        gameMessage: document.getElementById("game-message"),
+        playerMovesDisplay: document.getElementById("player-moves"),
+        computerMovesDisplay: document.getElementById("computer-moves"),
+        playerInfo: document.getElementById("player-info"),
+        computerInfo: document.getElementById("computer-info"),
+        adTimer: document.getElementById("ad-timer"),
+      };
 
-      /* ===========================
-       Inicialização
-       =========================== */
+      // Initialization
       function initGame() {
         createBoard();
         setupEventListeners();
         applyTheme();
         applyCustomColors();
-
-        // Adiciona evento de toque para dispositivos móveis
-        document.addEventListener("touchstart", function () {}, {
-          passive: true,
-        });
       }
 
       function createBoard() {
-        gameBoard.innerHTML = "";
+        elements.gameBoard.innerHTML = "";
         for (let i = 0; i < 9; i++) {
           const cell = document.createElement("div");
           cell.classList.add("cell");
           cell.dataset.index = i;
-
-          // Adiciona ambos os eventos para garantir compatibilidade
           cell.addEventListener("click", () => handleCellClick(i));
           cell.addEventListener("touchend", (e) => {
             e.preventDefault();
             handleCellClick(i);
           });
-
-          gameBoard.appendChild(cell);
+          elements.gameBoard.appendChild(cell);
         }
       }
 
       function setupEventListeners() {
-        // Remove event listeners existentes para evitar duplicação
-        const playBtn = document.getElementById("play-btn");
-        const settingsBtn = document.getElementById("settings-btn");
-        const customBtn = document.getElementById("custom-btn");
-        const exitBtn = document.getElementById("exit-btn");
-        const restartBtn = document.getElementById("restart-btn");
-        const menuBtn = document.getElementById("menu-btn");
-        const settingsBackBtn = document.getElementById("settings-back-btn");
-        const customBackBtn = document.getElementById("custom-back-btn");
-
-        // Remove event listeners antigos
-        playBtn.replaceWith(playBtn.cloneNode(true));
-        settingsBtn.replaceWith(settingsBtn.cloneNode(true));
-        customBtn.replaceWith(customBtn.cloneNode(true));
-        exitBtn.replaceWith(exitBtn.cloneNode(true));
-        restartBtn.replaceWith(restartBtn.cloneNode(true));
-        menuBtn.replaceWith(menuBtn.cloneNode(true));
-        settingsBackBtn.replaceWith(settingsBackBtn.cloneNode(true));
-        customBackBtn.replaceWith(customBackBtn.cloneNode(true));
-
-        // Adiciona novos event listeners
         document
           .getElementById("play-btn")
           .addEventListener("click", startGame);
@@ -731,7 +717,6 @@
           .getElementById("custom-back-btn")
           .addEventListener("click", showMainMenu);
 
-        // color pickers
         document
           .querySelectorAll(".color-option")
           .forEach((opt) =>
@@ -739,23 +724,20 @@
           );
       }
 
-      /* ===========================
-       Fluxo do jogo
-       =========================== */
+      // Game Functions
       function startGame() {
         resetGame();
-        mainMenu.style.display = "none";
-        gameScreen.style.display = "flex";
+        elements.mainMenu.style.display = "none";
+        elements.gameScreen.style.display = "flex";
         gameActive = true;
 
-        // alterna quem começa
         currentPlayer = playerStartsNext ? "X" : "O";
         playerStartsNext = !playerStartsNext;
 
         if (currentPlayer === "X") {
-          updateGameMessage("Sua vez! Clique em uma célula para colocar X");
+          updateGameMessage("Your turn! Click on a cell to place X");
         } else {
-          updateGameMessage("Computador começa...");
+          updateGameMessage("Computer starts...");
           setTimeout(computerMove, 800);
         }
       }
@@ -764,7 +746,6 @@
         board = Array(9).fill("");
         playerMoves = 0;
         computerMoves = 0;
-        totalMoves = 0;
         playerAttackMode = false;
         computerAttackMode = false;
         firstPlayerXIndex = -1;
@@ -772,8 +753,8 @@
         updateMovesDisplay();
         updatePlayerIndicators();
         resetBoardUI();
-        gameBoard.classList.remove("attack-mode-active");
-        gameMessage.classList.remove("attack-message");
+        elements.gameBoard.classList.remove("attack-mode-active");
+        elements.gameMessage.classList.remove("attack-message");
       }
 
       function resetBoardUI() {
@@ -783,18 +764,22 @@
         });
       }
 
-      // Jogada do jogador (X)
       function handleCellClick(index) {
         if (!gameActive || currentPlayer !== "X") return;
 
-        // No modo ataque, permite jogar em qualquer lugar (exceto na própria peça)
         if (playerAttackMode) {
-          if (board[index] === "X") return; // Não pode substituir própria peça
+          if (board[index] === "X") {
+            showEffectMessage("Cannot replace your own piece!");
+            sounds.error();
+            return;
+          }
         } else {
-          // No modo normal, só pode jogar em células vazias
-          if (board[index] !== "") return;
+          if (board[index] !== "") {
+            showEffectMessage("Cell already occupied!");
+            sounds.error();
+            return;
+          }
 
-          // Registra primeira jogada do jogador no 1º round
           if (firstPlayerXIndex === -1) {
             firstPlayerXIndex = index;
           }
@@ -802,19 +787,16 @@
 
         placeMark(index, "X");
         playerMoves++;
-        totalMoves++;
         updateMovesDisplay();
+        sounds.place();
 
-        if (soundEnabled) sounds.click.play();
-
-        // Se estamos no modo ataque e a primeira jogada existe e é diferente da célula atual, limpa-a
         if (
           playerAttackMode &&
           firstPlayerXIndex !== -1 &&
           firstPlayerXIndex !== index
         ) {
-          clearFirstMove(firstPlayerXIndex);
-          firstPlayerXIndex = -1; // Marca que a primeira peça foi removida
+          clearFirstMove(firstPlayerXIndex, "player");
+          firstPlayerXIndex = -1;
         }
 
         if (checkWin()) {
@@ -828,11 +810,10 @@
 
         currentPlayer = "O";
         updatePlayerIndicators();
-        updateGameMessage("Vez do computador...");
+        updateGameMessage("Computer's turn...");
         setTimeout(computerMove, 700);
       }
 
-      // Jogada do computador (O)
       function computerMove() {
         if (!gameActive || currentPlayer !== "O") return;
 
@@ -840,25 +821,21 @@
         let availableMoves = [];
 
         if (computerAttackMode) {
-          // No modo ataque: pode jogar em qualquer célula que não seja sua
           for (let i = 0; i < 9; i++) {
             if (board[i] !== "O") {
               availableMoves.push(i);
             }
           }
         } else {
-          // No modo normal: só pode jogar em células vazias
           availableMoves = board
             .map((v, i) => (v === "" ? i : null))
             .filter((v) => v !== null);
 
-          // Registra primeira jogada do computador no 1º round
           if (firstComputerOIndex === -1 && availableMoves.length > 0) {
             firstComputerOIndex = availableMoves[0];
           }
         }
 
-        // Estratégia do computador
         moveIndex = findWinningMove("O");
         if (moveIndex === -1) moveIndex = findWinningMove("X");
         if (moveIndex === -1) {
@@ -868,17 +845,15 @@
 
         placeMark(moveIndex, "O");
         computerMoves++;
-        totalMoves++;
         updateMovesDisplay();
-        if (soundEnabled) sounds.click.play();
+        sounds.place();
 
-        // Se no modo ataque limpa a primeira jogada do computador (se diferente da atual)
         if (
           computerAttackMode &&
           firstComputerOIndex !== -1 &&
           firstComputerOIndex !== moveIndex
         ) {
-          clearFirstMove(firstComputerOIndex);
+          clearFirstMove(firstComputerOIndex, "computer");
           firstComputerOIndex = -1;
         }
 
@@ -893,13 +868,12 @@
 
         currentPlayer = "X";
         updatePlayerIndicators();
-        updateGameMessage("Sua vez! Clique em uma célula para colocar X");
+        updateGameMessage("Your turn! Click on a cell to place X");
 
-        // Verifica se deve ativar o modo ataque
         checkAttackMode();
       }
 
-      function clearFirstMove(index) {
+      function clearFirstMove(index, player) {
         if (index < 0 || index > 8) return;
         board[index] = "";
         const cell = document.querySelector(`.cell[data-index="${index}"]`);
@@ -907,16 +881,20 @@
           cell.textContent = "";
           cell.classList.remove("x", "o");
           createSparkEffect(cell);
+          showEffectMessage(
+            `${
+              player === "player" ? "Your" : "Computer's"
+            } first piece vanished!`
+          );
+          sounds.spark();
         }
       }
 
       function createSparkEffect(cellElement) {
-        // Cria partículas de faísca
         for (let i = 0; i < 10; i++) {
           let spark = document.createElement("div");
           spark.classList.add("spark");
 
-          // Posiciona as faíscas aleatoriamente dentro da célula
           const rect = cellElement.getBoundingClientRect();
           const x = rect.left + Math.random() * rect.width;
           const y = rect.top + Math.random() * rect.height;
@@ -924,7 +902,6 @@
           spark.style.left = `${x}px`;
           spark.style.top = `${y}px`;
 
-          // Define direção aleatória para as faíscas
           const tx = (Math.random() - 0.5) * 100;
           const ty = (Math.random() - 0.5) * 100;
           spark.style.setProperty("--tx", `${tx}px`);
@@ -932,7 +909,6 @@
 
           document.body.appendChild(spark);
 
-          // Animação
           spark.animate(
             [
               { transform: "translate(0, 0)", opacity: 1 },
@@ -944,8 +920,6 @@
             }
           ).onfinish = () => spark.remove();
         }
-
-        if (soundEnabled) sounds.attack.play();
       }
 
       function placeMark(index, player) {
@@ -956,7 +930,6 @@
           cell.classList.remove("x", "o");
           cell.classList.add(player.toLowerCase());
 
-          // Efeito visual ao colocar a marca
           cell.style.transform = "scale(0.8)";
           setTimeout(() => {
             cell.style.transform = "scale(1)";
@@ -1007,7 +980,6 @@
       }
 
       function checkAttackMode() {
-        // Ativa o modo ataque quando ambos jogadores tiverem 3 peças no tabuleiro
         if (
           playerMoves >= 3 &&
           computerMoves >= 3 &&
@@ -1021,19 +993,21 @@
       function endGame(winner) {
         gameActive = false;
         if (winner === "X") {
-          updateGameMessage("🎉 Você venceu!");
-          if (soundEnabled) sounds.win.play();
+          updateGameMessage("🎉 You win!");
+          sounds.win();
+          showEffectMessage("Victory! Excellent strategy!");
         } else if (winner === "O") {
-          updateGameMessage("😢 O computador venceu!");
-          if (soundEnabled) sounds.lose.play();
+          updateGameMessage("😢 Computer wins!");
+          sounds.lose();
+          showEffectMessage("Better luck next time!");
         } else {
-          updateGameMessage("😐 Empate!");
-          if (soundEnabled) sounds.draw.play();
+          updateGameMessage("😐 Draw!");
+          sounds.draw();
+          showEffectMessage("It's a tie! Well played!");
         }
 
         matchesPlayed++;
 
-        // Mostra anúncio a cada 3 partidas
         if (matchesPlayed % 3 === 0) {
           setTimeout(showAd, 1000);
         }
@@ -1042,83 +1016,119 @@
       function activateAttackMode() {
         playerAttackMode = true;
         computerAttackMode = true;
-        gameBoard.classList.add("attack-mode-active");
+        elements.gameBoard.classList.add("attack-mode-active");
         updateGameMessage(
-          "⚔️ MODO ATAQUE ATIVADO! Agora você pode jogar em qualquer célula do oponente. Sua primeira peça será removida quando você fizer uma jogada."
+          "⚔️ ATTACK MODE ACTIVATED! You can now play on opponent's cells."
         );
-        if (soundEnabled) sounds.attack.play();
-        gameMessage.classList.add("attack-message");
+        sounds.powerup();
+        showEffectMessage("ATTACK MODE! Pieces can be replaced!");
+        elements.gameMessage.classList.add("attack-message");
+      }
+
+      function showEffectMessage(msg) {
+        const effectMsg = document.createElement("div");
+        effectMsg.className = "message effect-message";
+        effectMsg.textContent = msg;
+        effectMsg.style.fontSize = "1rem";
+        effectMsg.style.marginTop = "5px";
+        effectMsg.style.opacity = "0";
+
+        elements.gameMessage.parentNode.insertBefore(
+          effectMsg,
+          elements.gameMessage.nextSibling
+        );
+
+        setTimeout(() => {
+          effectMsg.style.transition = "opacity 0.5s";
+          effectMsg.style.opacity = "1";
+        }, 100);
+
+        setTimeout(() => {
+          effectMsg.style.opacity = "0";
+          setTimeout(() => {
+            if (effectMsg.parentNode) {
+              effectMsg.parentNode.removeChild(effectMsg);
+            }
+          }, 500);
+        }, 2000);
       }
 
       function showAd() {
-        adScreen.style.display = "flex";
+        elements.adScreen.style.display = "flex";
         let countdown = 5;
-        adTimer.textContent = countdown;
+        elements.adTimer.textContent = countdown;
         const timer = setInterval(() => {
           countdown--;
-          adTimer.textContent = countdown;
+          elements.adTimer.textContent = countdown;
           if (countdown <= 0) {
             clearInterval(timer);
-            adScreen.style.display = "none";
+            elements.adScreen.style.display = "none";
           }
         }, 1000);
       }
 
       function updateMovesDisplay() {
-        playerMovesDisplay.textContent = `Jogadas: ${playerMoves}`;
-        computerMovesDisplay.textContent = `Jogadas: ${computerMoves}`;
+        elements.playerMovesDisplay.textContent = `Moves: ${playerMoves}`;
+        elements.computerMovesDisplay.textContent = `Moves: ${computerMoves}`;
       }
 
       function updatePlayerIndicators() {
         if (currentPlayer === "X") {
-          playerInfo.classList.add("active");
-          computerInfo.classList.remove("active");
+          elements.playerInfo.classList.add("active");
+          elements.computerInfo.classList.remove("active");
         } else {
-          computerInfo.classList.add("active");
-          playerInfo.classList.remove("active");
+          elements.computerInfo.classList.add("active");
+          elements.playerInfo.classList.remove("active");
         }
       }
 
       function updateGameMessage(msg) {
-        gameMessage.textContent = msg;
-        // remove classe de ataque se a mensagem não for de ataque
-        if (!msg.toLowerCase().includes("ataque"))
-          gameMessage.classList.remove("attack-message");
+        elements.gameMessage.textContent = msg;
+        if (!msg.toLowerCase().includes("attack")) {
+          elements.gameMessage.classList.remove("attack-message");
+        }
       }
 
       function restartGame() {
         resetGame();
         gameActive = true;
-        updateGameMessage("Novo jogo iniciado!");
+        updateGameMessage("New game started!");
+        showEffectMessage("Game reset! Good luck!");
         if (!playerStartsNext) setTimeout(computerMove, 800);
       }
 
       function showMainMenu() {
-        mainMenu.style.display = "flex";
-        gameScreen.style.display = "none";
-        settingsScreen.style.display = "none";
-        customScreen.style.display = "none";
-        adScreen.style.display = "none";
+        elements.mainMenu.style.display = "flex";
+        elements.gameScreen.style.display = "none";
+        elements.settingsScreen.style.display = "none";
+        elements.customScreen.style.display = "none";
+        elements.adScreen.style.display = "none";
       }
 
       function showSettings() {
-        mainMenu.style.display = "none";
-        settingsScreen.style.display = "flex";
+        elements.mainMenu.style.display = "none";
+        elements.settingsScreen.style.display = "flex";
         document.getElementById("sound-toggle").checked = soundEnabled;
         document.getElementById("theme-toggle").checked = darkTheme;
       }
 
       function showCustom() {
-        mainMenu.style.display = "none";
-        customScreen.style.display = "flex";
+        elements.mainMenu.style.display = "none";
+        elements.customScreen.style.display = "flex";
       }
 
       function exitGame() {
-        alert("Obrigado por jogar Tic Tac Attack!");
+        alert("Thank you for playing Tic Tac Attack!");
       }
 
       function toggleSound() {
         soundEnabled = document.getElementById("sound-toggle").checked;
+        if (soundEnabled) {
+          if (audioContext.state === "suspended") {
+            audioContext.resume();
+          }
+          sounds.click();
+        }
       }
 
       function toggleTheme() {
@@ -1127,19 +1137,18 @@
       }
 
       function applyTheme() {
-        if (darkTheme) document.body.classList.remove("light-theme");
-        else document.body.classList.add("light-theme");
+        if (darkTheme) {
+          document.body.classList.remove("light-theme");
+        } else {
+          document.body.classList.add("light-theme");
+        }
       }
 
-      /* ===========================
-       Personalização de cores
-       =========================== */
       function handleColorSelection(e) {
         const option = e.target;
-        const id = option.id; // ex: x-color-1, o-color-2, board-color-3
-        const group = id.split("-")[0]; // x / o / board
+        const id = option.id;
+        const group = id.split("-")[0];
 
-        // marcar seleção visual
         option.parentElement
           .querySelectorAll(".color-option")
           .forEach((o) => o.classList.remove("selected"));
@@ -1156,6 +1165,8 @@
           boardColor = color;
           document.documentElement.style.setProperty("--cell-bg", boardColor);
         }
+
+        sounds.click();
       }
 
       function applyCustomColors() {
@@ -1164,7 +1175,7 @@
         document.documentElement.style.setProperty("--cell-bg", boardColor);
       }
 
-      // Inicializa o jogo quando a página carregar
+      // Initialize game
       window.addEventListener("DOMContentLoaded", initGame);
     </script>
   </body>
