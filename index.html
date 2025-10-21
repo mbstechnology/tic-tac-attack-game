@@ -624,23 +624,13 @@
       let oColor = "#4d94ff";
       let boardColor = "#1e1e1e";
 
-      // Sons (URLs públicos do Google actions)
+      // Sons simplificados - sem áudio externo
       const sounds = {
-        click: new Audio(
-          "https://actions.google.com/sounds/v1/cartoon/wood_plank_flicks.ogg"
-        ),
-        win: new Audio(
-          "https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg"
-        ),
-        lose: new Audio(
-          "https://actions.google.com/sounds/v1/cartoon/metal_thud_and_reverb.ogg"
-        ),
-        draw: new Audio(
-          "https://actions.google.com/sounds/v1/cartoon/woodpecker_tap.ogg"
-        ),
-        attack: new Audio(
-          "https://actions.google.com/sounds/v1/alarms/beep_short.ogg"
-        ),
+        click: { play: () => {} },
+        win: { play: () => {} },
+        lose: { play: () => {} },
+        draw: { play: () => {} },
+        attack: { play: () => {} },
       };
 
       // Elementos DOM
@@ -665,6 +655,11 @@
         setupEventListeners();
         applyTheme();
         applyCustomColors();
+
+        // Adiciona evento de toque para dispositivos móveis
+        document.addEventListener("touchstart", function () {}, {
+          passive: true,
+        });
       }
 
       function createBoard() {
@@ -673,12 +668,40 @@
           const cell = document.createElement("div");
           cell.classList.add("cell");
           cell.dataset.index = i;
+
+          // Adiciona ambos os eventos para garantir compatibilidade
           cell.addEventListener("click", () => handleCellClick(i));
+          cell.addEventListener("touchend", (e) => {
+            e.preventDefault();
+            handleCellClick(i);
+          });
+
           gameBoard.appendChild(cell);
         }
       }
 
       function setupEventListeners() {
+        // Remove event listeners existentes para evitar duplicação
+        const playBtn = document.getElementById("play-btn");
+        const settingsBtn = document.getElementById("settings-btn");
+        const customBtn = document.getElementById("custom-btn");
+        const exitBtn = document.getElementById("exit-btn");
+        const restartBtn = document.getElementById("restart-btn");
+        const menuBtn = document.getElementById("menu-btn");
+        const settingsBackBtn = document.getElementById("settings-back-btn");
+        const customBackBtn = document.getElementById("custom-back-btn");
+
+        // Remove event listeners antigos
+        playBtn.replaceWith(playBtn.cloneNode(true));
+        settingsBtn.replaceWith(settingsBtn.cloneNode(true));
+        customBtn.replaceWith(customBtn.cloneNode(true));
+        exitBtn.replaceWith(exitBtn.cloneNode(true));
+        restartBtn.replaceWith(restartBtn.cloneNode(true));
+        menuBtn.replaceWith(menuBtn.cloneNode(true));
+        settingsBackBtn.replaceWith(settingsBackBtn.cloneNode(true));
+        customBackBtn.replaceWith(customBackBtn.cloneNode(true));
+
+        // Adiciona novos event listeners
         document
           .getElementById("play-btn")
           .addEventListener("click", startGame);
@@ -763,14 +786,14 @@
       // Jogada do jogador (X)
       function handleCellClick(index) {
         if (!gameActive || currentPlayer !== "X") return;
-        
+
         // No modo ataque, permite jogar em qualquer lugar (exceto na própria peça)
         if (playerAttackMode) {
           if (board[index] === "X") return; // Não pode substituir própria peça
         } else {
           // No modo normal, só pode jogar em células vazias
           if (board[index] !== "") return;
-          
+
           // Registra primeira jogada do jogador no 1º round
           if (firstPlayerXIndex === -1) {
             firstPlayerXIndex = index;
@@ -785,7 +808,11 @@
         if (soundEnabled) sounds.click.play();
 
         // Se estamos no modo ataque e a primeira jogada existe e é diferente da célula atual, limpa-a
-        if (playerAttackMode && firstPlayerXIndex !== -1 && firstPlayerXIndex !== index) {
+        if (
+          playerAttackMode &&
+          firstPlayerXIndex !== -1 &&
+          firstPlayerXIndex !== index
+        ) {
           clearFirstMove(firstPlayerXIndex);
           firstPlayerXIndex = -1; // Marca que a primeira peça foi removida
         }
@@ -824,7 +851,7 @@
           availableMoves = board
             .map((v, i) => (v === "" ? i : null))
             .filter((v) => v !== null);
-          
+
           // Registra primeira jogada do computador no 1º round
           if (firstComputerOIndex === -1 && availableMoves.length > 0) {
             firstComputerOIndex = availableMoves[0];
@@ -835,7 +862,8 @@
         moveIndex = findWinningMove("O");
         if (moveIndex === -1) moveIndex = findWinningMove("X");
         if (moveIndex === -1) {
-          moveIndex = availableMoves[Math.floor(Math.random() * availableMoves.length)];
+          moveIndex =
+            availableMoves[Math.floor(Math.random() * availableMoves.length)];
         }
 
         placeMark(moveIndex, "O");
@@ -845,7 +873,11 @@
         if (soundEnabled) sounds.click.play();
 
         // Se no modo ataque limpa a primeira jogada do computador (se diferente da atual)
-        if (computerAttackMode && firstComputerOIndex !== -1 && firstComputerOIndex !== moveIndex) {
+        if (
+          computerAttackMode &&
+          firstComputerOIndex !== -1 &&
+          firstComputerOIndex !== moveIndex
+        ) {
           clearFirstMove(firstComputerOIndex);
           firstComputerOIndex = -1;
         }
@@ -862,7 +894,7 @@
         currentPlayer = "X";
         updatePlayerIndicators();
         updateGameMessage("Sua vez! Clique em uma célula para colocar X");
-        
+
         // Verifica se deve ativar o modo ataque
         checkAttackMode();
       }
@@ -870,7 +902,7 @@
       function clearFirstMove(index) {
         if (index < 0 || index > 8) return;
         board[index] = "";
-        const cell = document.querySelector(.cell[data-index="${index}"]);
+        const cell = document.querySelector(`.cell[data-index="${index}"]`);
         if (cell) {
           cell.textContent = "";
           cell.classList.remove("x", "o");
@@ -889,14 +921,14 @@
           const x = rect.left + Math.random() * rect.width;
           const y = rect.top + Math.random() * rect.height;
 
-          spark.style.left = ${x}px;
-          spark.style.top = ${y}px;
+          spark.style.left = `${x}px`;
+          spark.style.top = `${y}px`;
 
           // Define direção aleatória para as faíscas
           const tx = (Math.random() - 0.5) * 100;
           const ty = (Math.random() - 0.5) * 100;
-          spark.style.setProperty("--tx", ${tx}px);
-          spark.style.setProperty("--ty", ${ty}px);
+          spark.style.setProperty("--tx", `${tx}px`);
+          spark.style.setProperty("--ty", `${ty}px`);
 
           document.body.appendChild(spark);
 
@@ -904,7 +936,7 @@
           spark.animate(
             [
               { transform: "translate(0, 0)", opacity: 1 },
-              { transform: translate(${tx}px, ${ty}px), opacity: 0 },
+              { transform: `translate(${tx}px, ${ty}px)`, opacity: 0 },
             ],
             {
               duration: 500 + Math.random() * 500,
@@ -918,7 +950,7 @@
 
       function placeMark(index, player) {
         board[index] = player;
-        const cell = document.querySelector(.cell[data-index="${index}"]);
+        const cell = document.querySelector(`.cell[data-index="${index}"]`);
         if (cell) {
           cell.textContent = player;
           cell.classList.remove("x", "o");
@@ -976,7 +1008,12 @@
 
       function checkAttackMode() {
         // Ativa o modo ataque quando ambos jogadores tiverem 3 peças no tabuleiro
-        if (playerMoves >= 3 && computerMoves >= 3 && !playerAttackMode && !computerAttackMode) {
+        if (
+          playerMoves >= 3 &&
+          computerMoves >= 3 &&
+          !playerAttackMode &&
+          !computerAttackMode
+        ) {
           activateAttackMode();
         }
       }
@@ -1007,7 +1044,7 @@
         computerAttackMode = true;
         gameBoard.classList.add("attack-mode-active");
         updateGameMessage(
-          "⚔ MODO ATAQUE ATIVADO! Agora você pode jogar em qualquer célula do oponente. Sua primeira peça será removida quando você fizer uma jogada."
+          "⚔️ MODO ATAQUE ATIVADO! Agora você pode jogar em qualquer célula do oponente. Sua primeira peça será removida quando você fizer uma jogada."
         );
         if (soundEnabled) sounds.attack.play();
         gameMessage.classList.add("attack-message");
@@ -1028,8 +1065,8 @@
       }
 
       function updateMovesDisplay() {
-        playerMovesDisplay.textContent = Jogadas: ${playerMoves};
-        computerMovesDisplay.textContent = Jogadas: ${computerMoves};
+        playerMovesDisplay.textContent = `Jogadas: ${playerMoves}`;
+        computerMovesDisplay.textContent = `Jogadas: ${computerMoves}`;
       }
 
       function updatePlayerIndicators() {
@@ -1127,7 +1164,8 @@
         document.documentElement.style.setProperty("--cell-bg", boardColor);
       }
 
-      window.onload = initGame;
+      // Inicializa o jogo quando a página carregar
+      window.addEventListener("DOMContentLoaded", initGame);
     </script>
   </body>
 </html>
